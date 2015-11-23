@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+
+{% block menu %}
+    <div class="navbar navbar-default navbar-material-brown">
+        <div class="container">
+            <div class="row">
+                <ul class="nav navbar-nav" style="text-align: center;">
+                    <li><a href="{% url "home" %}">
+                        <div class="navbar-logo">
+                            <img src="{% static "images/picstore_logo.png" %}">
+                        </div>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_content %}
+    <div class="detail">
+    <div class="container">
+        <div class="row">
+            <h3>{% trans "Image:" %}</h3>
+            <div class="col-sm-4">
+                <img class="picture-detail" src="{{ picture.thumbnail.url }}">
+            </div>
+            <div class="col-sm-8">
+                <h1>{{ picture.name }}</h1>
+                <p>
+                    {{ picture.short_descriptiontion }}
+                </p>
+                <table class="table">
+                    <tr>
+                        <td>
+                            {% trans "Category" %}
+                        </td>
+                        <td>
+                            {{ picture.category }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% trans "Description" %}
+                        </td>
+                        <td>
+                            {{ picture.short_description }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% trans "Likes" %}
+                        </td>
+                        <td>
+                            {{ picture.likes }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% trans "Price" %}
+                        </td>
+                        <td>
+                            {{ picture.price }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <a class="btn btn-material-amber" role="button">
+                                <span class="mdi-action-add-shopping-cart"></span>
+                                {% trans "Add to cart" %}
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <h3>{% trans "Tags:" %}</h3>
+            {% for tag in tags %}
+                <div class="tag">
+                    <div class="label label-material-brown"># {{ tag.name }}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <h3>{% trans "Similar:" %}</h3>
+            {% for s_pic in similar_pictures %}
+                <div class="col-sm-3">
+                    <a href="{% url "picture" s_pic.pk %}">
+                        <img class="picture-detail-similar" src="{{ s_pic.thumbnail.url }}">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+{% endblock %}

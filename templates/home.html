@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% block style %}
+    {{ block.super }}
+    <style>
+        .navbar-nav {
+            width: 100%;
+            text-align: center;
+        }
+        .navbar-nav > li {
+            float: none;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
+{% block menu %}
+    <div class="parallax-window" data-parallax="scroll" data-image-src="{% static "images/home_header.jpeg" %}">
+        <div class="container container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-xs-offset-3">
+                    <div class="home-logo">
+                        <img src="{% static "images/picstore_logo.png" %}">
+                    </div>
+                </div>
+                <div class="col-xs-8 col-xs-offset-2">
+                    <div class="search-box form-group form-group-material-brown">
+                        <input onkeypress="add_tag_default(event);" id="search-box" class="form-control" type="text" placeholder="#" style="font-size: 25px"/>
+                        <div id="suggestion-container" class="suggestion-container">
+                            <div id="box" class="dropdown-menu">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_content %}
+    <div class="navbar navbar-default navbar-material-brown">
+        <div class="container">
+            <div class="row">
+                <ul class="nav navbar-nav" style="text-align: center;">
+                    {% for category in super_categories %}
+                        <li><a href="#">{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                <a role="button" class="btn btn-fab btn-material-amber upload_button mdi-file-cloud-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="{% trans "Upload" %}"></a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+    <div class="row">
+        <div id="content" class="clearfix mosaicflow" data-min-item-width="300">
+
+            {% for pic in pictures %}
+                <div class="mosaicflow__item">
+                    <a href="{% url "picture" pic.pk %}">
+                        <div class="picture-wrapper">
+                            <img src="{{ pic.thumbnail.url }}" class="picture">
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    <div id="downloader" class="row download">
+        <img src="{% static "images/download.gif" %}">
+    </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script>
+        var tags = {{ all_tags|safe }};
+        var selected_tags = [];
+        var selected_tag_index = 0;
+        var search_box = document.getElementById("search-box");
+        var suggestion_container = document.getElementById("suggestion-container");
+        suggestion_container.hidden = true;
+        var suggestion_box = document.getElementById("box");
+        var words = [];
+        search_box.focus();
+
+
+        search_box.oninput = function() {
+            words = search_box.value.split(" ");
+            if (search_box.value.length == 0 || search_box.value[search_box.value.length - 1] == ' ') {
+                suggestion_container.hidden = true;
+                return;
+            }
+            var i;
+            selected_tags = [];
+            selected_tag_index = 0;
+            for (i = 0; i < tags.length; i++) {
+                if (tags[i].indexOf(words[words.length - 1]) == 0 && tags[i].length > words[words.length - 1].length) {
+                    selected_tags.push(tags[i]);
+                }
+                if (selected_tags.length >= 5){
+                    break;
+                }
+            }
+            suggestion_container.hidden = selected_tags.length == 0;
+            suggestion_box.innerHTML = "";
+            for (i = 0; i < selected_tags.length; i++) {
+                suggestion_box.innerHTML += '<li><a id="t' + i + '" role="button" onclick="add_tag(\'' + selected_tags[i] +
+                        '\');">' + selected_tags[i] + '</a></li>';
+            }
+        };
+
+        function add_tag(tag) {
+            search_box.value = "";
+            for (var i = 0; i < words.length - 1; i++) {
+                search_box.value += words[i] + " ";
+            }
+            search_box.value += tag + " ";
+            search_box.focus();
+            suggestion_container.hidden = true;
+            selected_tags = [];
+        }
+
+        function add_tag_default(event) {
+            if (event.keyCode == 13) {
+                if (selected_tags.length == 0){
+                    $.ajax({
+                        url: '{% url "pictures" %}',
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(
+                            {
+                                tags: search_box.value.split(" ")
+                            }
+                        ),
+                        success: function(data) {
+                        {#  alert( JSON.stringify(data)); #}
+                            document.getElementById("content").innerHTML = "";
+
+                            var container = $('#content').mosaicflow({
+                                itemSelector: '.item',
+                                minItemWidth: 300
+                            });
+
+                            for (var i = 0; i < data.pictures.length; i ++) {
+                                var mosaicflow_item = document.createElement("div");
+                                mosaicflow_item.className = "mosaicflow__item";
+                                var a = document.createElement("a");
+                                a.href = data.pictures[i].link;
+                                var wraper = document.createElement("div");
+                                wraper.className = "picture-wrapper";
+                                var image = document.createElement("img");
+                                image.className = "picture";
+                                image.width = 500;
+                                image.height = 300;
+                                image.src = data.pictures[i].url;
+
+                                wraper.appendChild(image);
+                                a.appendChild(wraper);
+                                mosaicflow_item.appendChild(a);
+
+                                container.mosaicflow('add', mosaicflow_item);
+                                document.getElementById("content").appendChild(mosaicflow_item);
+                            }
+                            Parallax.setup();
+                        }
+                    });
+                } else {
+                    add_tag(selected_tags[selected_tag_index]);
+                }
+            } else if(event.keyCode == 38){
+{#              Up                           #}
+                selected_tag_index -= 1;
+                selected_tag_index = (selected_tag_index + selected_tags.length) % selected_tags.length;
+                select_item(selected_tag_index);
+            } else if(event.keyCode == 40){
+{#              Down                         #}
+                selected_tag_index += 1;
+                selected_tag_index = selected_tag_index % selected_tags.length;
+                select_item(selected_tag_index);
+            }
+        }
+
+        var old_index = 0;
+        function select_item(index) {
+            document.getElementById("t" + old_index).className = '';
+            document.getElementById("t" + index).className = 'selected_item';
+            old_index = index;
+        }
+
+    </script>
+{% endblock %}
+
