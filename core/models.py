@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser, User
 from django.db import models
 from PIL import Image
 import os
@@ -49,6 +50,7 @@ class Sale(models.Model):
 
 @humanize_verbose_names
 class Picture(models.Model):
+    owner = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category)
     name = models.CharField(max_length=255)
@@ -92,3 +94,9 @@ class Picture(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User)
+    picture = models.ForeignKey(Picture)
+    payed = models.BooleanField(default=False)

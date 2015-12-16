@@ -4,7 +4,7 @@
 {% load staticfiles %}
 
 {% block menu %}
-    <div class="navbar navbar-default navbar-material-brown">
+    <div class="navbar navbar-fixed-top navbar-material-brown">
         <div class="container">
             <div class="row">
                 <ul class="nav navbar-nav" style="text-align: center;">
@@ -20,6 +20,7 @@
 {% endblock %}
 
 {% block page_content %}
+    <div class="moved-down">
     <div class="detail">
     <div class="container">
         <div class="row">
@@ -96,6 +97,7 @@
                 </div>
             {% endfor %}
         </div>
+    </div>
     </div>
     </div>
 {% endblock %}

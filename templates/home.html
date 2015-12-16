@@ -15,6 +15,8 @@
             display: inline-block;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href={% static "css/component.css" %}/>
+    <script src={% static "js/modernizr.custom.js" %}></script>
 {% endblock %}
 
 {% block menu %}
@@ -46,8 +48,13 @@
         <div class="container">
             <div class="row">
                 <ul class="nav navbar-nav" style="text-align: center;">
-                    {% for category in super_categories %}
-                        <li><a href="#">{{ category.name }}</a></li>
+                    {% if category %}
+                        <li><a href="{% url "home" %}">{% trans "All" %}</a></li>
+                    {% endif %}
+                    {% for i_category in super_categories %}
+                        {% if i_category.name != category %}
+                            <li><a href="?category={{ i_category.name }}">{{ i_category.name }}</a></li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
                 <a role="button" class="btn btn-fab btn-material-amber upload_button mdi-file-cloud-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="{% trans "Upload" %}"></a>
@@ -56,19 +63,13 @@
     </div>
     <div class="container">
     <div class="row">
-        <div id="content" class="clearfix mosaicflow" data-min-item-width="300">
-
+        <ul class="grid effect-2" id="grid">
             {% for pic in pictures %}
-                <div class="mosaicflow__item">
-                    <a href="{% url "picture" pic.pk %}">
-                        <div class="picture-wrapper">
-                            <img src="{{ pic.thumbnail.url }}" class="picture">
-                        </div>
-                    </a>
-                </div>
+                <li><a href="{% url "picture" pic.pk %}">
+                    <img src="{{ pic.thumbnail.url }}" class="picture">
+                </a></li>
             {% endfor %}
-
-        </div>
+        </ul>
     </div>
     <div id="downloader" class="row download">
         <img src="{% static "images/download.gif" %}">
@@ -78,7 +79,17 @@
 
 {% block script %}
     {{ block.super }}
+    <script src={% static "js/masonry.pkgd.min.js" %}></script>
+    <script src={% static "js/imagesloaded.js" %}></script>
+    <script src={% static "js/classie.js" %}></script>
+    <script src={% static "js/AnimOnScroll.js" %}></script>
     <script>
+        var aon = new AnimOnScroll( document.getElementById('grid'), {
+            minDuration : 0.4,
+            maxDuration : 0.7,
+            viewportFactor : 0.2
+        } );
+
         var tags = {{ all_tags|safe }};
         var selected_tags = [];
         var selected_tag_index = 0;
@@ -128,50 +139,41 @@
 
         function add_tag_default(event) {
             if (event.keyCode == 13) {
-                if (selected_tags.length == 0){
-                    $.ajax({
-                        url: '{% url "pictures" %}',
-                        type: "POST",
-                        contentType: "application/json",
-                        data: JSON.stringify(
-                            {
-                                tags: search_box.value.split(" ")
-                            }
-                        ),
-                        success: function(data) {
-                        {#  alert( JSON.stringify(data)); #}
-                            document.getElementById("content").innerHTML = "";
-
-                            var container = $('#content').mosaicflow({
-                                itemSelector: '.item',
-                                minItemWidth: 300
-                            });
-
-                            for (var i = 0; i < data.pictures.length; i ++) {
-                                var mosaicflow_item = document.createElement("div");
-                                mosaicflow_item.className = "mosaicflow__item";
-                                var a = document.createElement("a");
-                                a.href = data.pictures[i].link;
-                                var wraper = document.createElement("div");
-                                wraper.className = "picture-wrapper";
-                                var image = document.createElement("img");
-                                image.className = "picture";
-                                image.width = 500;
-                                image.height = 300;
-                                image.src = data.pictures[i].url;
-
-                                wraper.appendChild(image);
-                                a.appendChild(wraper);
-                                mosaicflow_item.appendChild(a);
-
-                                container.mosaicflow('add', mosaicflow_item);
-                                document.getElementById("content").appendChild(mosaicflow_item);
-                            }
-                            Parallax.setup();
-                        }
-                    });
-                } else {
+                if (selected_tags.length != 0) {
                     add_tag(selected_tags[selected_tag_index]);
+                } else {
+{#                    $.ajax({#}
+{#                        url: '{% url "pictures" %}',#}
+{#                        type: "POST",#}
+{#                        contentType: "application/json",#}
+{#                        data: JSON.stringify(#}
+{#                                {#}
+{#                                    tags: search_box.value.split(" ")#}
+{#                                }#}
+{#                        ),#}
+{#                        success: function (data) {#}
+                            {#  alert(JSON.stringify(data)); #}
+{#                            document.getElementById("grid").innerHTML = "";#}
+{##}
+{#                            for (var i = 0; i < data.pictures.length; i++) {#}
+{#                                var item = document.createElement('li');#}
+{#                                var inner_html =#}
+{#                                        '<a href="{}"'.replace("{}", data.pictures[i].link) +#}
+{#                                        '<img src="{}" class="picture">'.replace("{}", data.pictures[i].url) +#}
+{#                                        '</a>';#}
+{#                                item.innerHTML = inner_html;#}
+{#                                document.getElementById("grid").appendChild(item);#}
+{#                            }#}
+{#                            delete aon;#}
+{#                            aon = new AnimOnScroll(document.getElementById('grid'), {#}
+{#                                minDuration: 0.4,#}
+{#                                maxDuration: 0.7,#}
+{#                                viewportFactor: 0.2#}
+{#                            });#}
+{##}
+{#                            Parallax.setup();#}
+{#                        }#}
+{#                    });#}
                 }
             } else if(event.keyCode == 38){
 {#              Up                           #}

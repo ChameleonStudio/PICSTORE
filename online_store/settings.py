@@ -123,5 +123,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 PICTURE_PATH = "pictures/original"
 THUMBNAIL_PATH = "pictures/thumbnail"
+USER_PHOTO_PATH = "users"
 
 THUMBNAIL_SIZE = 500, 500

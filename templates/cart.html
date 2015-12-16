@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+
+{% block menu %}
+    <div class="navbar navbar-fixed-top navbar-material-brown">
+        <div class="container">
+            <div class="row">
+                <ul class="nav navbar-nav" style="text-align: center;">
+                    <li><a href="{% url "home" %}">
+                        <div class="navbar-logo">
+                            <img src="{% static "images/picstore_logo.png" %}">
+                        </div>
+                    </a></li>
+                    <li>
+                    <li>
+                        <a href="javascript:void(0)">
+                            <span class="mdi-action-add-shopping-cart"></span>
+                            <span class="cost"><strong>{% trans 'Cart' %}</strong> : {% trans 'Total price' %}</span>
+                            <strong class="label label-material-amber cost">{{ total_price }}</strong>
+                        </a>
+                    </li>
+                </ul>
+                <a role="button" class="btn btn-fab btn-material-amber download_button mdi-file-cloud-download" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{% trans "Download" %}"></a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block page_content %}
+    <div class="moved-down">
+    {% for pic in pictures %}
+        <div class="row history-block">
+            <div class="col-sm-4 picture-history visible-sm visible-md visible-lg">
+                <a href="{% url "picture" pic.pk %}">
+                    <img src="{{ pic.thumbnail.url }}" width="100%" class="picture">
+                </a>
+            </div>
+            <div class="col-xs-7">
+                <h2>{{ pic.name }}</h2>
+               <table class="table">
+                    <tr>
+                        <td>
+                            {% trans "Category" %}
+                        </td>
+                        <td>
+                            {{ pic.category }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% trans "Description" %}
+                        </td>
+                        <td>
+                            {{ pic.short_description }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% trans "Likes" %}
+                        </td>
+                        <td>
+                            {{ pic.likes }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% trans "Price" %}
+                        </td>
+                        <td>
+                            <div class="tag">
+                                <strong class="label label-material-amber">{{ pic.price }}</strong>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+
+    </div>
+{% endblock %}
+

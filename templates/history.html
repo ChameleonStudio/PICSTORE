@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+
+{% block menu %}
+    <div class="navbar navbar-fixed-top navbar-material-brown">
+        <div class="container">
+            <div class="row">
+                <ul class="nav navbar-nav" style="text-align: center;">
+                    <li><a href="{% url "home" %}">
+                        <div class="navbar-logo">
+                            <img src="{% static "images/picstore_logo.png" %}">
+                        </div>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block page_content %}
+    <div class="moved-down">
+    {% for pic in pictures %}
+        <div class="row history-block">
+            <div class="col-sm-4 picture-history visible-sm visible-md visible-lg">
+                <a href="{% url "picture" pic.pk %}">
+                    <img src="{{ pic.thumbnail.url }}" width="100%" class="picture">
+                </a>
+            </div>
+            <div class="col-xs-7">
+                <h2>{{ pic.name }}</h2>
+               <table class="table">
+                    <tr>
+                        <td>
+                            {% trans "Category" %}
+                        </td>
+                        <td>
+                            {{ pic.category }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% trans "Description" %}
+                        </td>
+                        <td>
+                            {{ pic.short_description }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% trans "Likes" %}
+                        </td>
+                        <td>
+                            {{ pic.likes }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
+
