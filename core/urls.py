@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^logout', views.logout_view, name='logout'),
     url(r'^signup', views.SignUpView.as_view(), name='signup'),
     url(r'^add_to_cart', views.AddToCartView.as_view(), name='add_to_cart'),
+    url(r'^buy', views.BuyCartView.as_view(), name='buy'),
 ]

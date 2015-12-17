@@ -22,7 +22,7 @@
                         </a>
                     </li>
                 </ul>
-                <a role="button" class="btn btn-fab btn-material-amber download_button mdi-file-cloud-download" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{% trans "Download" %}"></a>
+                <a onclick="buy();" role="button" class="btn btn-fab btn-material-amber download_button mdi-file-cloud-download" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{% trans "Download" %}"></a>
             </div>
         </div>
     </div>
@@ -82,5 +82,56 @@
     {% endfor %}
 
     </div>
+{% endblock %}
+
+
+{% block script %}
+    {{ block.super }}
+    <script>
+
+
+        function download(img) {
+            var link = document.createElement("a");
+            link.href = img;
+            link.download = true;
+            link.style.display = "none";
+            var evt = new MouseEvent("click", {
+                "view": window,
+                "bubbles": true,
+                "cancelable": true
+            });
+
+            document.body.appendChild(link);
+            link.dispatchEvent(evt);
+            document.body.removeChild(link);
+            console.log("Downloading...");
+        }
+
+
+        function downloadAll(imgs, limit) {
+            for (var i = 0; i < limit; i++) {
+                var img = imgs[i];
+                console.log("IMG: " + img + " (", img, ")");
+                download(img);
+            }
+        }
+
+        buy = function() {
+             $.ajax({
+                url: '{% url "buy" %}',
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(
+                    {
+                        user_pk: {{ user.pk }}
+                    }
+                ),
+                success: function (data) {
+                    downloadAll({{ originals|safe }}, {{ originals|length }});
+                    window.location.href = "{% url 'history' %}";
+                }
+            });
+        };
+    </script>
 {% endblock %}
 

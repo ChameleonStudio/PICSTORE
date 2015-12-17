@@ -28,9 +28,13 @@ class HomeView(TemplateView):
         self.tag = ""
         self.category = None
         self.page = 1
+        self.tags = None
 
     def dispatch(self, request, *args, **kwargs):
         self.category = request.GET.get("category", None)
+        self.tags = request.GET.get("search")
+        if self.tags:
+            self.tags = self.tags.split()
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -42,7 +46,7 @@ class HomeView(TemplateView):
         if self.category:
             pictures = pictures.filter(category__super_category__name=self.category)
         if tags:
-            # pictures = pictures.filter(tags=tags)
+            pictures = pictures.filter(tags=tags)
             pass
         context["pictures"] = pictures.all()
         context["all_tags"] = tags
@@ -106,6 +110,7 @@ class CartView(TemplateView):
             pk__in=Cart.objects.filter(user=self.request.user, payed=False).values_list("picture_id", flat=True)
         )
         context["pictures"] = pictures.all()
+        context["originals"] = list(map(lambda x: x.picture.url, context["pictures"]))
         context["total_price"] = pictures.aggregate(sum=Sum("price"))["sum"]
         return context
 
@@ -134,4 +139,13 @@ class AddToCartView(APIView):
         picture_pk = request.data.get("picture_pk")
         # user_pk = request.data.get("user_pk")
         Cart.objects.create(user=request.user, picture=Picture.objects.get(pk=picture_pk))
+        return Response()
+
+
+class BuyCartView(APIView):
+
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request):
+        Cart.objects.filter(user=request.user, payed=False).update(payed=True)
         return Response()
