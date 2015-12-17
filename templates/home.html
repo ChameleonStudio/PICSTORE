@@ -24,9 +24,11 @@
         <div class="container container-fluid">
             <div class="row">
                 <div class="col-xs-6 col-xs-offset-3">
-                    <div class="home-logo">
-                        <img src="{% static "images/picstore_logo.png" %}">
-                    </div>
+                    <a href="{% url 'home' %}">
+                        <div class="home-logo">
+                            <img src="{% static "images/picstore_logo.png" %}">
+                        </div>
+                    </a>
                 </div>
                 <div class="col-xs-8 col-xs-offset-2">
                     <div class="search-box form-group form-group-material-brown">
@@ -75,9 +77,14 @@
             {% endfor %}
         </ul>
     </div>
-{#    <div id="downloader" class="row download">#}
-{#        <img src="{% static "images/download.gif" %}">#}
-{#    </div>#}
+    {% if not pictures %}
+        <div class="row">
+            <div class="alert alert-dismissible alert-info">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>{% trans 'No results!' %}</strong>
+            </div>
+        </div>
+    {% endif %}
     <div class="row download">
         <a href={% url "admin:index" %}>{% trans 'Admin panel' %}</a>
     </div>

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-17 09:55+0000\n"
-"PO-Revision-Date: 2015-12-17 12:01+0300\n"
+"POT-Creation-Date: 2015-12-17 10:31+0000\n"
+"PO-Revision-Date: 2015-12-17 12:32+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -19,59 +19,59 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: core/dummy.py:8 core/dummy.py:27 core/dummy.py:76
+#: core/dummy.py:8 core/dummy.py:27 core/dummy.py:75
 msgid "user"
 msgstr "Пользователь"
 
-#: core/dummy.py:9 core/dummy.py:77
+#: core/dummy.py:9 core/dummy.py:76
 msgid "users"
 msgstr "Пользователи"
 
-#: core/dummy.py:10 core/dummy.py:79
+#: core/dummy.py:10 core/dummy.py:78
 msgid "password"
 msgstr "Пароль"
 
-#: core/dummy.py:11 core/dummy.py:80
+#: core/dummy.py:11 core/dummy.py:79
 msgid "last login"
 msgstr "Последный вход"
 
-#: core/dummy.py:12 core/dummy.py:81
+#: core/dummy.py:12 core/dummy.py:80
 msgid "superuser status"
 msgstr "статус"
 
-#: core/dummy.py:13 core/dummy.py:82
+#: core/dummy.py:13 core/dummy.py:81
 msgid "username"
 msgstr "Имя пользователя"
 
-#: core/dummy.py:14 core/dummy.py:83
+#: core/dummy.py:14 core/dummy.py:82
 msgid "first name"
 msgstr "Имя"
 
-#: core/dummy.py:15 core/dummy.py:84
+#: core/dummy.py:15 core/dummy.py:83
 msgid "last name"
 msgstr "Фамилия"
 
-#: core/dummy.py:16 core/dummy.py:85
+#: core/dummy.py:16 core/dummy.py:84
 msgid "email address"
 msgstr "Email"
 
-#: core/dummy.py:17 core/dummy.py:86
+#: core/dummy.py:17 core/dummy.py:85
 msgid "staff status"
 msgstr "статус"
 
-#: core/dummy.py:18 core/dummy.py:87
+#: core/dummy.py:18 core/dummy.py:86
 msgid "active"
 msgstr "Активный"
 
-#: core/dummy.py:19 core/dummy.py:88
+#: core/dummy.py:19 core/dummy.py:87
 msgid "date joined"
 msgstr "Дата добавления"
 
-#: core/dummy.py:20 core/dummy.py:89
+#: core/dummy.py:20 core/dummy.py:88
 msgid "groups"
 msgstr "Группы"
 
-#: core/dummy.py:21 core/dummy.py:90
+#: core/dummy.py:21 core/dummy.py:89
 msgid "user permissions"
 msgstr "Права пользователя"
 
@@ -83,13 +83,12 @@ msgstr "Корзина"
 msgid "carts"
 msgstr "Корзины"
 
-#: core/dummy.py:26 core/dummy.py:34 core/dummy.py:43 core/dummy.py:59
-#: core/dummy.py:66 core/dummy.py:78
+#: core/dummy.py:26 core/dummy.py:34 core/dummy.py:43 core/dummy.py:58
+#: core/dummy.py:65 core/dummy.py:77
 msgid "ID"
 msgstr "ID"
 
 #: core/dummy.py:28
-#| msgid "Picture"
 msgid "picture"
 msgstr "Изображение"
 
@@ -97,7 +96,7 @@ msgstr "Изображение"
 msgid "payed"
 msgstr "Оплачено"
 
-#: core/dummy.py:32 core/dummy.py:46 templates/cart.html:47
+#: core/dummy.py:32 core/dummy.py:45 templates/cart.html:52
 #: templates/detail.html:39 templates/history.html:37
 msgid "Category"
 msgstr "Категория"
@@ -106,11 +105,11 @@ msgstr "Категория"
 msgid "Categories"
 msgstr "Категории"
 
-#: core/dummy.py:35 core/dummy.py:47 core/dummy.py:67 core/dummy.py:73
+#: core/dummy.py:35 core/dummy.py:46 core/dummy.py:66 core/dummy.py:72
 msgid "Name"
 msgstr "Имя"
 
-#: core/dummy.py:36 core/dummy.py:61 core/dummy.py:68 templates/cart.html:55
+#: core/dummy.py:36 core/dummy.py:60 core/dummy.py:67 templates/cart.html:60
 #: templates/detail.html:47 templates/history.html:45
 msgid "Description"
 msgstr "Описание"
@@ -119,11 +118,11 @@ msgstr "Описание"
 msgid "Icon class"
 msgstr "Класс иконки"
 
-#: core/dummy.py:38 core/dummy.py:64
+#: core/dummy.py:38 core/dummy.py:63
 msgid "Super category"
 msgstr "Над категория"
 
-#: core/dummy.py:41 core/dummy.py:50
+#: core/dummy.py:41 core/dummy.py:49
 msgid "Picture"
 msgstr "Изображение"
 
@@ -132,55 +131,51 @@ msgid "Pictures"
 msgstr "Изображения"
 
 #: core/dummy.py:44
-msgid "Owner"
-msgstr "Владелец"
-
-#: core/dummy.py:45
 msgid "Created"
 msgstr "Дата создания"
 
-#: core/dummy.py:48
+#: core/dummy.py:47
 msgid "Short description"
 msgstr "Описание"
 
-#: core/dummy.py:49 templates/cart.html:71 templates/detail.html:63
+#: core/dummy.py:48 templates/cart.html:76 templates/detail.html:63
 msgid "Price"
 msgstr "Стоимость"
 
-#: core/dummy.py:51
+#: core/dummy.py:50
 msgid "Thumbnail"
 msgstr "Миниатюра"
 
-#: core/dummy.py:52 core/dummy.py:57
+#: core/dummy.py:51 core/dummy.py:56
 msgid "Sale"
 msgstr "Скидка"
 
-#: core/dummy.py:53 templates/cart.html:63 templates/detail.html:55
+#: core/dummy.py:52 templates/cart.html:68 templates/detail.html:55
 #: templates/history.html:53
 msgid "Likes"
 msgstr "Лайки"
 
-#: core/dummy.py:54
+#: core/dummy.py:53
 msgid "tags"
 msgstr "теги"
 
-#: core/dummy.py:58
+#: core/dummy.py:57
 msgid "Sales"
 msgstr "Скидки"
 
-#: core/dummy.py:60
+#: core/dummy.py:59
 msgid "Value"
 msgstr "Значение"
 
-#: core/dummy.py:65
+#: core/dummy.py:64
 msgid "Super categories"
 msgstr "Над категории"
 
-#: core/dummy.py:71
+#: core/dummy.py:70
 msgid "Tag"
 msgstr "Тег"
 
-#: core/dummy.py:72
+#: core/dummy.py:71
 msgid "Tags"
 msgstr "Теги"
 
@@ -193,10 +188,10 @@ msgid "Logout"
 msgstr "Выйти"
 
 #: templates/base.html:36
-msgid "List"
-msgstr "Список"
+msgid "History"
+msgstr "История"
 
-#: templates/base.html:40 templates/cart.html:20
+#: templates/base.html:40 templates/cart.html:21
 msgid "Cart"
 msgstr "Корзина"
 
@@ -204,13 +199,21 @@ msgstr "Корзина"
 msgid "Login"
 msgstr "Вход"
 
-#: templates/cart.html:20
+#: templates/cart.html:21
 msgid "Total price"
 msgstr "Стоимость"
 
-#: templates/cart.html:25
+#: templates/cart.html:28
 msgid "Download"
 msgstr "Загрузка"
+
+#: templates/cart.html:93
+msgid "Cart is empty!"
+msgstr "Корзина пуста!"
+
+#: templates/cart.html:94
+msgid "Find picture?"
+msgstr "Найти картинку?"
 
 #: templates/detail.html:27
 msgid "Image:"
@@ -230,7 +233,6 @@ msgid "Add to cart"
 msgstr "Добавить в корзину"
 
 #: templates/detail.html:112
-#| msgid "Tags"
 msgid "Tags:"
 msgstr "Теги:"
 
@@ -238,15 +240,19 @@ msgstr "Теги:"
 msgid "Similar:"
 msgstr "Похожие:"
 
-#: templates/home.html:52 templates/upload.html:52
+#: templates/home.html:54 templates/upload.html:52
 msgid "All"
 msgstr "Все"
 
-#: templates/home.html:61 templates/home.html.py:63 templates/upload.html:60
+#: templates/home.html:63 templates/home.html.py:65 templates/upload.html:60
 msgid "Upload"
 msgstr "Загрузить"
 
-#: templates/home.html:82 templates/upload.html:78
+#: templates/home.html:84
+msgid "No results!"
+msgstr "Нет результатов поиска!"
+
+#: templates/home.html:89 templates/upload.html:78
 msgid "Admin panel"
 msgstr "Панель администратора"
 
@@ -273,7 +279,6 @@ msgid "Log in"
 msgstr "Войти"
 
 #: templates/signup.html:30
-#| msgid "Description"
 msgid "Registration"
 msgstr "Регистрация"
 
@@ -284,3 +289,9 @@ msgstr "Email"
 #: templates/signup.html:54 templates/signup.html.py:56
 msgid "Password again"
 msgstr "Пароль (повтор)"
+
+#~ msgid "Owner"
+#~ msgstr "Владелец"
+
+#~ msgid "List"
+#~ msgstr "Список"
