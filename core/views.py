@@ -67,10 +67,12 @@ class PictureDetailView(TemplateView):
             context["similar_pictures"] = list(pictures)[:4]
         context["cart"] = False
         if self.request.user.is_authenticated():
-            try:
-                context["payed"] = Cart.objects.get(picture__pk=kwargs["pk"]).payed
+
+            cart = Cart.objects.filter(picture__pk=kwargs["pk"], user=self.request.user).all()
+            if cart:
+                context["payed"] = cart[0].payed
                 context["cart"] = True
-            except Cart.DoesNotExist:
+            else:
                 context["payed"] = False
         return context
 
@@ -120,6 +122,7 @@ class CartView(TemplateView):
             pk__in=Cart.objects.filter(user=self.request.user, payed=False).values_list("picture_id", flat=True)
         )
         context["pictures"] = pictures.all()
+        context["is_empty"] = bool(len(context["pictures"]))
         context["originals"] = list(map(lambda x: x.picture.url, context["pictures"]))
         context["total_price"] = pictures.aggregate(sum=Sum("price"))["sum"]
         return context
