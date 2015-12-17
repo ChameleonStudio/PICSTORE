@@ -27,6 +27,32 @@
 
         {% block upload_button %}{% endblock %}
 
+        {% if request.user.is_authenticated %}
+            <div class="user-info">
+                <a id="logout_btn" href="{% url 'logout' %}" class="btn btn-material-amber btn-fab" data-toggle="tooltip" data-placement="left" title="" data-original-title="{% trans "Logout" %}">
+                    <i class="mdi-action-input"></i>
+                </a>
+                {% if not request.user.is_superuser %}
+                    <a id="history_btn" href="{% url 'history' %}" class="btn btn-material-amber btn-fab" data-toggle="tooltip" data-placement="left" title="" data-original-title="{% trans "List" %}">
+                        <i class="mdi-action-list"></i>
+                    </a>
+
+                    <a id="cart_btn" href="{% url 'cart' %}" class="btn btn-material-amber btn-fab" data-toggle="tooltip" data-placement="left" title="" data-original-title="{% trans "Cart" %}">
+                        <i class="mdi-action-add-shopping-cart"></i>
+                    </a>
+                {% endif %}
+                <a onclick="menuToggle();" class="btn btn-material-brown btn-fab" data-toggle="tooltip" data-placement="left" title="" data-original-title="{{ request.user.username }}">
+                    <i class="mdi-action-account-circle"></i>
+                </a>
+            </div>
+        {% else %}
+            <div class="user-info">
+                <a href="{% url 'login' %}" class="btn btn-material-brown btn-fab" data-toggle="tooltip" data-placement="left" title="" data-original-title="{% trans 'Login' %}">
+                    <i class="mdi-action-account-circle"></i>
+                </a>
+            </div>
+        {% endif %}
+
         {% block script %}
             <script src="{% static "js/jquery.min.js" %}"></script>
             <script src="{% static "js/bootstrap.min.js" %}"></script>
@@ -37,6 +63,29 @@
             <script>
                 $.material.init();
                 $(function () {$('[data-toggle="tooltip"]').tooltip();})
+
+                document.getElementById("logout_btn").style.display = 'none';
+                {% if not request.user.is_superuser %}
+                    document.getElementById("cart_btn").style.display = 'none';
+                    document.getElementById("history_btn").style.display = 'none';
+                {% endif %}
+                var open = false;
+                menuToggle = function() {
+                    open = !open;
+                    if (open) {
+                        document.getElementById("logout_btn").style.display = 'block';
+                        {% if not request.user.is_superuser %}
+                            document.getElementById("cart_btn").style.display = 'block';
+                            document.getElementById("history_btn").style.display = 'block';
+                        {% endif %}
+                    } else {
+                        document.getElementById("logout_btn").style.display = 'none';
+                        {% if not request.user.is_superuser %}
+                            document.getElementById("cart_btn").style.display = 'none';
+                            document.getElementById("history_btn").style.display = 'none';
+                        {% endif %}
+                    }
+                };
             </script>
         {% endblock %}
     </body>

@@ -23,11 +23,11 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-xs-offset-4 col-xs-4">
+            <div class="col-xs-offset-2 col-xs-8">
+
                 <div class="panel panel-material-brown">
                     <div class="panel-heading">
-                        <h2 class="panel-title">{% trans 'Loging in or' %} <a href="{% url 'signup' %}" class="btn btn-material-brown btn-sm">{% trans 'Register' %}</a></h2>
-
+                        <h2 class="panel-title">{% trans 'Registration' %}</h2>
                     </div>
                     <div class="panel-body">
                         <form class="form-horizontal" method="post" action="">
@@ -39,14 +39,26 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="id_email" class="col-md-4 control-label">{% trans 'Email' %}</label>
+                                <div class="col-md-8">
+                                    <input class="form-control"  name="email" id="id_email" placeholder="{% trans 'Email' %}" type="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="id_password"  class="col-md-4 control-label">{% trans 'Password' %}</label>
                                 <div class="col-md-8">
                                     <input class="form-control" name="password" id="id_password" placeholder="{% trans 'Password' %}" type="password">
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="id_password2" class="col-md-4 control-label">{% trans 'Password again' %}</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" name="password2" id="id_password2" placeholder="{% trans 'Password again' %}" type="password">
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="col-md-8 col-md-offset-4">
-                                    <button type="submit" class="btn btn-material-amber">{% trans 'Log in' %}</button>
+                                    <button type="submit" class="btn btn-material-amber">{% trans 'Register' %}</button>
                                 </div>
                             </div>
                         </form>

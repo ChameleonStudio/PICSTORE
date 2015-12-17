@@ -161,3 +161,20 @@ h3 {
 table > tbody > tr > td {
     width: 200px; !important;
 }
+
+
+.user-info {
+    z-index: 1000;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+}
+
+.user-info > .btn.btn-fab {
+    margin-top: 10px;
+    display: block;
+}
+
+.white-btn {
+    background: white;
+}

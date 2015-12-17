@@ -1,10 +1,14 @@
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Sum
-from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
+from django.views.generic import TemplateView, View, FormView, CreateView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from core.models import Category, Picture, Tag, SuperCategory
+from core.models import Category, Picture, Tag, SuperCategory, Cart
+from .forms import RegistrationForm, LoginForm
 
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -57,8 +61,40 @@ class PictureDetailView(TemplateView):
         return context
 
 
-class LoginView(TemplateView):
+class LoginView(FormView):
     template_name = "login.html"
+    form_class = LoginForm
+    success_url = "home"
+
+    def form_valid(self, form):
+        username = self.request.POST.get("username")
+        password = self.request.POST.get("password")
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(self.request, user)
+        else:
+            return super().form_invalid(form)
+        return super().form_valid(form)
+
+
+class SignUpView(FormView):
+    template_name = "signup.html"
+    form_class = RegistrationForm
+    success_url = "login"
+
+    def form_valid(self, form):
+        username = self.request.POST.get("username")
+        password = self.request.POST.get("password")
+        email = self.request.POST.get("email")
+        user = User(username=username, email=email)
+        user.set_password(password)
+        user.save()
+        return super().form_valid(form)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("home")
 
 
 class CartView(TemplateView):
@@ -66,7 +102,36 @@ class CartView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        pictures = Picture.objects
+        pictures = Picture.objects.filter(
+            pk__in=Cart.objects.filter(user=self.request.user, payed=False).values_list("picture_id", flat=True)
+        )
         context["pictures"] = pictures.all()
         context["total_price"] = pictures.aggregate(sum=Sum("price"))["sum"]
         return context
+
+
+class HistoryView(TemplateView):
+    template_name = "history.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        pictures = Picture.objects.filter(
+            pk__in=Cart.objects.filter(user=self.request.user, payed=True).values_list("picture_id", flat=True)
+        )
+        context["pictures"] = pictures.all()
+        return context
+
+
+class UploadView(TemplateView):
+    template_name = "upload.html"
+
+
+class AddToCartView(APIView):
+
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request):
+        picture_pk = request.data.get("picture_pk")
+        # user_pk = request.data.get("user_pk")
+        Cart.objects.create(user=request.user, picture=Picture.objects.get(pk=picture_pk))
+        return Response()
