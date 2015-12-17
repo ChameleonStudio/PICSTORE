@@ -50,7 +50,7 @@ class Sale(models.Model):
 
 @humanize_verbose_names
 class Picture(models.Model):
-    owner = models.ForeignKey(User)
+    # owner = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category)
     name = models.CharField(max_length=255)

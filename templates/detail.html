@@ -71,10 +71,28 @@
                         </td>
                         <td>
                             {% if request.user.is_authenticated %}
-                                <a  id="add_cart" onclick="addToCart();" class="btn btn-material-amber" role="button">
-                                    <span class="mdi-action-add-shopping-cart"></span>
-                                    {% trans "Add to cart" %}
-                                </a>
+                                {% if payed %}
+                                    <a href="{% url 'history' %}" class="btn btn-material-teal" role="button">
+                                        <span class="mdi-action-list"></span>
+                                        {% trans "View history" %}
+                                    </a>
+                                {% else %}
+                                    {% if cart %}
+                                        <a href="{% url 'cart' %}" class="btn btn-material-teal" role="button">
+                                            <span class="mdi-action-add-shopping-cart"></span>
+                                            {% trans "View cart" %}
+                                        </a>
+                                    {% else %}
+                                        <a  id="add_cart" onclick="addToCart();" class="btn btn-material-amber" role="button">
+                                            <span class="mdi-action-add-shopping-cart"></span>
+                                            {% trans "Add to cart" %}
+                                        </a>
+                                        <a id="view_cart" href="{% url 'cart' %}" class="btn btn-material-teal" role="button" style="display: none">
+                                            <span class="mdi-action-add-shopping-cart"></span>
+                                            {% trans "View cart" %}
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
                                 <a id="view_cart" href="{% url 'cart' %}" class="btn btn-material-teal" role="button" style="display: none">
                                     <span class="mdi-action-add-shopping-cart"></span>
                                     {% trans "View cart" %}
