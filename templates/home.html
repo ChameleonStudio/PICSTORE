@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-xs-8 col-xs-offset-2">
                     <div class="search-box form-group form-group-material-brown">
-                        <input onkeypress="add_tag_default(event);" id="search-box" class="form-control" type="text" placeholder="#" style="font-size: 25px" value="{{ search }}"/>
+                        <input onkeypress="add_tag_default(event);" id="search-box" class="form-control" type="text" placeholder="# {% trans 'enter a tag' %}" style="font-size: 25px" value="{{ search }}"/>
                         <div id="suggestion-container" class="suggestion-container">
                             <div id="box" class="dropdown-menu">
 
@@ -72,7 +72,12 @@
         <ul class="grid effect-2" id="grid">
             {% for pic in pictures %}
                 <li><a href="{% url "picture" pic.pk %}">
-                    <img src="{{ pic.thumbnail.url }}" class="picture">
+                    <div class="image">
+                        <img src="{{ pic.thumbnail.url }}">
+                        <div class="overlay">
+                            {{ pic.likes }} <span class="mdi-action-favorite likes"></span>
+                        </div>
+                    </div>
                 </a></li>
             {% endfor %}
         </ul>

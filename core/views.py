@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, FormView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from core.models import Picture, Tag, SuperCategory, Cart
+from core.models import Picture, Tag, SuperCategory, Cart, Like
 from .forms import RegistrationForm, LoginForm
 
 
@@ -67,13 +67,13 @@ class PictureDetailView(TemplateView):
             context["similar_pictures"] = list(pictures)[:4]
         context["cart"] = False
         if self.request.user.is_authenticated():
-
             cart = Cart.objects.filter(picture__pk=kwargs["pk"], user=self.request.user).all()
             if cart:
                 context["payed"] = cart[0].payed
                 context["cart"] = True
             else:
                 context["payed"] = False
+            context["liked"] = bool(Like.objects.filter(user=self.request.user, picture=context["picture"]).count())
         return context
 
 
@@ -150,7 +150,6 @@ class AddToCartView(APIView):
 
     def post(self, request):
         picture_pk = request.data.get("picture_pk")
-        # user_pk = request.data.get("user_pk")
         Cart.objects.create(user=request.user, picture=Picture.objects.get(pk=picture_pk))
         return Response()
 
@@ -161,4 +160,21 @@ class BuyCartView(APIView):
 
     def post(self, request):
         Cart.objects.filter(user=request.user, payed=False).update(payed=True)
+        return Response()
+
+
+class ToggleLike(APIView):
+
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request):
+        picture = Picture.objects.get(pk=request.data.get("picture_pk"))
+        try:
+            like = Like.objects.get(user=request.user, picture=picture)
+            like.delete()
+            picture.likes -= 1
+        except Like.DoesNotExist:
+            Like.objects.create(user=request.user, picture=picture)
+            picture.likes += 1
+        picture.save()
         return Response()

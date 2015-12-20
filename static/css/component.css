@@ -20,14 +20,13 @@
 }
 
 .grid li a,
-.grid li img {
+.grid li img,
+.grid li div {
 	outline: none;
 	border: none;
-	display: block;
 	max-width: 100%;
 }
 
-/* Effect 1: opacity */
 .grid.effect-1 li.animate {
 	-webkit-animation: fadeIn 0.65s ease forwards;
 	animation: fadeIn 0.65s ease forwards;

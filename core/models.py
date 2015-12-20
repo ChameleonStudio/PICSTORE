@@ -100,3 +100,8 @@ class Cart(models.Model):
     user = models.ForeignKey(User)
     picture = models.ForeignKey(Picture)
     payed = models.BooleanField(default=False)
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User)
+    picture = models.ForeignKey(Picture)

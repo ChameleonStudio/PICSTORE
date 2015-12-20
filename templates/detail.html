@@ -55,7 +55,17 @@
                             {% trans "Likes" %}
                         </td>
                         <td>
-                            {{ picture.likes }}
+                            <span id="likes"> {{ picture.likes }} </span>
+                            {% if request.user.is_authenticated %}
+                                <a role="button" onclick="toggleLike();">
+                                    {% if liked %}
+                                        <span id="liked" class="mdi-action-favorite"></span>
+                                    {% else %}
+                                        <span id="liked" class="mdi-action-favorite-outline"></span>
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+
                         </td>
                     </tr>
                     <tr>
@@ -151,5 +161,29 @@
                 }
             });
         };
+
+        toggleLike = function() {
+            $.ajax({
+                url: '{% url "toggle_like" %}',
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(
+                    {
+                        picture_pk: {{ picture.pk }}
+                    }
+                ),
+                success: function (data) {
+                    e = document.getElementById("liked");
+                    number = document.getElementById("likes");
+                    if (e.className == 'mdi-action-favorite-outline') {
+                        e.className = 'mdi-action-favorite';
+                        number.innerHTML = parseInt(number.innerHTML) + 1;
+                    } else {
+                        e.className = 'mdi-action-favorite-outline';
+                        number.innerHTML = parseInt(number.innerHTML) - 1;
+                    }
+                }
+            });
+        }
     </script>
 {% endblock %}
